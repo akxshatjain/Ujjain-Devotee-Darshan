@@ -1,0 +1,432 @@
+<!-- Main Card Container -->
+<div class="erp-card bg-white rounded-xl shadow-lg w-full max-w-2xl p-8 md:p-10 mx-auto my-8">
+
+  <!-- Header -->
+  <div class="mb-8 text-center">
+    <h1 id="main-heading" class="text-3xl font-semibold text-gray-800">
+      <!-- dynamic heading -->
+      <ng-container [ngSwitch]="view">
+        <span *ngSwitchCase="'registration'">Register with Us</span>
+        <span *ngSwitchCase="'login'">Login</span>
+        <span *ngSwitchCase="'dashboard'">Dashboard</span>
+        <span *ngSwitchCase="'bookings'">My Bookings</span>
+        <span *ngSwitchCase="'shigra'">Book Shigra Darshan</span>
+        <span *ngSwitchCase="'vip'">Book VIP Darshan (Protocol)</span>
+        <span *ngSwitchCase="'localide'">Book Localide Darshan</span>
+        <span *ngSwitchCase="'bhasm'">Book Bhasm Arti</span>
+      </ng-container>
+    </h1>
+    <p id="sub-heading" class="text-gray-500 mt-2">
+      <ng-container [ngSwitch]="view">
+        <span *ngSwitchCase="'registration'">Create your account to get started.</span>
+        <span *ngSwitchCase="'login'">Access your account.</span>
+        <span *ngSwitchCase="'dashboard'">Welcome back!</span>
+        <span *ngSwitchCase="'bookings'">View your upcoming and past darshan bookings.</span>
+        <span *ngSwitchCase="'shigra'">Enter details and pay to book.</span>
+        <span *ngSwitchCase="'vip'">Select your protocol category to proceed.</span>
+        <span *ngSwitchCase="'localide'">Ujjain Residents Only. eKYC Mandatory.</span>
+        <span *ngSwitchCase="'bhasm'">Secure your spot for the sacred arti. eKYC mandatory.</span>
+      </ng-container>
+    </p>
+  </div>
+
+  <!-- Progress Bar (hidden for non-registration flows) -->
+  <div class="progress-bar-container mb-8" *ngIf="view === 'registration'">
+    <div id="progress-bar" class="progress-bar" [ngStyle]="{ width: progressBarWidth }"></div>
+  </div>
+
+  <!-- REGISTRATION STEPS -->
+  <div *ngIf="view === 'registration'">
+    <!-- Step 1 -->
+    <div *ngIf="progressBarWidth === '33.33%'">
+      <div class="mb-6">
+        <label for="mobile" class="block text-sm font-medium text-gray-700">Mobile Number</label>
+        <input type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number"
+               class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+               [(ngModel)]="mobile">
+        <p id="mobile-error" class="text-red-500 text-sm mt-1" *ngIf="mobileError">Please enter a valid mobile number.</p>
+      </div>
+      <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+              (click)="onNextStep1()">Next</button>
+    </div>
+
+    <!-- Step 2: eVKYC -->
+    <div *ngIf="progressBarWidth === '66.66%'" class="mt-6">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-semibold text-gray-800">Complete your eVKYC</h2>
+        <p class="text-gray-500 mt-2">Complete your eKYC now to unlock all features. You can also skip this step and do it later.</p>
+      </div>
+      <div class="flex flex-col space-y-4">
+        <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700"
+                (click)="completeRegistration()">Complete eVKYC</button>
+        <button class="w-full bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-300"
+                (click)="skipEvkyc()">Skip for now</button>
+      </div>
+      <div class="mt-6 text-center">
+        <a href="#" (click)="$event.preventDefault(); progressBarWidth='33.33%';" class="text-sm font-medium text-blue-600 hover:underline">&larr; Back</a>
+      </div>
+    </div>
+
+    <!-- Step 3: Additional details -->
+    <div *ngIf="progressBarWidth === '100%'" class="mt-6">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-semibold text-gray-800">Complete Your Profile</h2>
+        <p class="text-gray-500 mt-2">Please provide a few more details to finish your registration.</p>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <label for="fullname" class="block text-sm font-medium text-gray-700">Full Name</label>
+          <input type="text" id="fullname" [(ngModel)]="fullname" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="John Doe">
+        </div>
+        <div>
+          <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
+          <select id="gender" [(ngModel)]="gender" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg">
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div>
+          <label for="dob" class="block text-sm font-medium text-gray-700">Date of Birth</label>
+          <input type="date" id="dob" [(ngModel)]="dob" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg">
+        </div>
+        <div>
+          <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+          <textarea id="address" rows="3" [(ngModel)]="address" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="123 Main St, Anytown"></textarea>
+        </div>
+      </div>
+      <div class="mt-6">
+        <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold" (click)="completeRegistration()">Complete Registration</button>
+      </div>
+      <div class="mt-6 text-center">
+        <a href="#" (click)="$event.preventDefault(); progressBarWidth='66.66%';" class="text-sm font-medium text-blue-600 hover:underline">&larr; Back</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN -->
+  <div *ngIf="view === 'login'">
+    <div class="text-center mb-6">
+      <h2 class="text-2xl font-semibold text-gray-800">Login with Mobile Number</h2>
+      <p class="text-gray-500 mt-2">Enter your registered mobile number to log in.</p>
+    </div>
+    <div class="mb-6">
+      <label for="login-mobile" class="block text-sm font-medium text-gray-700">Mobile Number</label>
+      <input type="tel" id="login-mobile" [(ngModel)]="loginMobile" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg">
+    </div>
+    <button class="w-full bg-blue-600 text-white py-3 rounded-lg" (click)="login()">Login</button>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div *ngIf="view === 'dashboard'">
+    <div class="text-center mb-6">
+      <h2 class="text-2xl font-semibold text-gray-800">Dashboard</h2>
+      <p class="text-gray-500 mt-2">Welcome! Please select an option below.</p>
+    </div>
+    <div class="space-y-4">
+      <button class="w-full bg-blue-600 text-white py-3 rounded-lg" (click)="showBookingsView()">View Bookings</button>
+      <button class="w-full bg-blue-600 text-white py-3 rounded-lg" (click)="showShigraDarshanView()">Book - Shigra Darshan</button>
+      <button class="w-full bg-indigo-600 text-white py-3 rounded-lg" (click)="showVipDarshanView()">Book - VIP Darshan</button>
+      <button class="w-full bg-blue-600 text-white py-3 rounded-lg" (click)="showLocalideDarshanView()">Book - Localide Darshan</button>
+      <button class="w-full bg-blue-600 text-white py-3 rounded-lg" (click)="showBhasmArtiView()">Book - Bhasm Arti</button>
+    </div>
+    <div class="mt-6 text-center">
+      <a href="#" (click)="$event.preventDefault(); logout()" class="text-sm font-medium text-gray-500 hover:underline">Logout</a>
+    </div>
+  </div>
+
+  <!-- BOOKINGS VIEW -->
+  <div *ngIf="view === 'bookings'">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-semibold text-gray-800">My Bookings</h2>
+      <button class="text-sm font-medium text-blue-600 hover:underline" (click)="showDashboard()">&larr; Back to Dashboard</button>
+    </div>
+
+    <div class="space-y-6">
+      <!-- Upcoming -->
+      <div>
+        <h3 class="text-xl font-medium text-gray-700 border-b pb-2 mb-4">Upcoming Bookings</h3>
+        <div *ngIf="upcomingBookings.length; else noUpcoming" class="space-y-4">
+          <div *ngFor="let b of upcomingBookings" class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+            <div class="flex justify-between items-center">
+              <h4 class="text-lg font-semibold text-gray-800">{{ b.type }}</h4>
+              <span class="px-3 py-1 text-xs font-medium rounded-full" [ngClass]="b.isUpcoming ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'">{{ b.status }}</span>
+            </div>
+            <p class="text-sm text-gray-600 mt-1">Booking ID: {{ b.id }}</p>
+            <p class="text-sm text-gray-600">Date/Time: {{ b.date }} at {{ b.time }}</p>
+          </div>
+        </div>
+        <ng-template #noUpcoming>
+          <p class="text-gray-500 text-center">No upcoming bookings found.</p>
+        </ng-template>
+      </div>
+
+      <!-- Past -->
+      <div>
+        <h3 class="text-xl font-medium text-gray-700 border-b pb-2 mb-4">Past Bookings</h3>
+        <div *ngIf="pastBookings.length; else noPast" class="space-y-4">
+          <div *ngFor="let b of pastBookings" class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+            <div class="flex justify-between items-center">
+              <h4 class="text-lg font-semibold text-gray-800">{{ b.type }}</h4>
+              <span class="px-3 py-1 text-xs font-medium rounded-full" [ngClass]="b.isUpcoming ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'">{{ b.status }}</span>
+            </div>
+            <p class="text-sm text-gray-600 mt-1">Booking ID: {{ b.id }}</p>
+            <p class="text-sm text-gray-600">Date/Time: {{ b.date }} at {{ b.time }}</p>
+          </div>
+        </div>
+        <ng-template #noPast>
+          <p class="text-gray-500 text-center">No past bookings found.</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHIGRA DARSHAN -->
+  <div *ngIf="view === 'shigra'">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-semibold text-gray-800">Book Shigra Darshan</h2>
+      <button class="text-sm font-medium text-blue-600 hover:underline" (click)="showDashboard()">&larr; Back to Dashboard</button>
+    </div>
+
+    <div class="space-y-4">
+      <div class="border border-gray-300 rounded-lg p-4">
+        <h3 class="text-lg font-medium text-gray-700 mb-2">Primary Devotee</h3>
+        <p id="devotee-name" class="text-gray-600 font-semibold text-lg">{{ userData.fullName }}</p>
+        <p class="text-sm text-gray-500">You will be the primary person for this booking.</p>
+      </div>
+
+      <!-- companions simplified here -->
+      <div>
+        <h3 class="text-lg font-medium text-gray-700 mb-2">Companions (max 10)</h3>
+        <div class="space-y-4">
+          <div *ngFor="let cIndex of [].constructor(companionCount); let i = index" class="border border-gray-300 rounded-lg p-4">
+            <p>Companion {{ i + 1 }} (placeholder)</p>
+          </div>
+        </div>
+        <div class="flex space-x-2 mt-2">
+          <button class="w-full bg-green-500 text-white py-2 rounded-lg" (click)="companionCount = Math.min(maxCompanions, companionCount + 1)">Add Companion</button>
+          <button class="w-full bg-red-500 text-white py-2 rounded-lg" (click)="companionCount = Math.max(0, companionCount - 1)">Remove</button>
+        </div>
+      </div>
+
+      <div>
+        <label for="visit-date" class="block text-sm font-medium text-gray-700">Date of Visit</label>
+        <input type="date" id="visit-date" [(ngModel)]="shigraVisitDate" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg">
+      </div>
+
+      <div id="slots-section" *ngIf="shigraSlotsVisible">
+        <label class="block text-sm font-medium text-gray-700">Available Slots</label>
+        <div class="mt-1 grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <!-- example static slots -->
+          <button type="button" class="slot-button border rounded-lg px-3 py-2" [class.selected]="selectedShigraSlot === '08:00 AM'" (click)="selectedShigraSlot='08:00 AM'">08:00 AM</button>
+          <button type="button" class="slot-button border rounded-lg px-3 py-2" [class.selected]="selectedShigraSlot === '10:30 AM'" (click)="selectedShigraSlot='10:30 AM'">10:30 AM</button>
+          <button type="button" class="slot-button border rounded-lg px-3 py-2" [class.selected]="selectedShigraSlot === '02:00 PM'" (click)="selectedShigraSlot='02:00 PM'">02:00 PM</button>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <p class="text-gray-600 text-sm">Price per person: <span class="font-semibold text-blue-600">₹{{ shigraPrice }}</span></p>
+        <p class="text-2xl font-bold text-gray-800 mt-2">Total Payable: <span id="total-amount">₹{{ shigraPrice * (companionCount + 1) }}</span></p>
+      </div>
+
+      <button class="w-full bg-blue-600 text-white py-3 rounded-lg" (click)="bookShigraDarshan()">Book Now</button> 
+    
+    </div>
+  </div>
+
+  <!-- VIP DARSHAN -->
+  <div *ngIf="view === 'vip'">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-semibold text-gray-800">Book VIP Darshan</h2>
+      <button class="text-sm font-medium text-indigo-600 hover:underline" (click)="showDashboard()">&larr; Back to Dashboard</button>
+    </div>
+
+    <div class="space-y-4">
+      <div class="border border-gray-300 rounded-lg p-4 bg-gray-50">
+        <h3 class="text-lg font-medium text-gray-700 mb-2">Primary Devotee</h3>
+        <p id="vip-devotee-name" class="text-gray-600 font-semibold text-lg">{{ userData.fullName }}</p>
+      </div>
+
+      <div>
+        <label for="mp-protocol-dropdown" class="block text-sm font-medium text-gray-700">Protocol under which State Government of MP List</label>
+        <select id="mp-protocol-dropdown" [(ngModel)]="vipProtocol" class="mt-1 block w-full px-4 py-3 border rounded-lg">
+          <option value="">Select Protocol Category</option>
+          <option value="state_guest_class_1">State Guest - Class I</option>
+          <option value="state_guest_class_2">State Guest - Class II</option>
+          <option value="high_official_recommendation">High Official Recommendation</option>
+          <option value="mla_mp_request">MLA/MP Request (Verification Required)</option>
+          <option value="media_protocol">Accredited Media Protocol</option>
+          <option value="senior_citizen_protocol">Senior Citizen Protocol (Above 80)</option>
+        </select>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-medium text-gray-700 mb-2">Companions (max 10)</h3>
+        <div id="vip-companions-container" class="space-y-4">
+          <div *ngFor="let c of vipCompanions; let i = index" class="border border-gray-300 rounded-lg p-4 bg-white">
+            <div class="flex justify-between items-center mb-2">
+              <h4 class="text-lg font-medium text-gray-700">Companion {{ i + 1 }}</h4>
+              <button type="button" class="text-red-500 hover:text-red-700 text-sm font-semibold" (click)="removeVipCompanion(i)">Remove</button>
+            </div>
+            <input type="text" placeholder="Full Name (Mandatory)" [(ngModel)]="vipCompanions[i].name"
+                   class="mt-1 block w-full px-4 py-2 border rounded-lg">
+          </div>
+        </div>
+        <button class="mt-4 w-full bg-green-500 text-white py-2 rounded-lg" (click)="addVipCompanion()" [disabled]="vipCompanions.length >= maxCompanions">Add Companion</button>
+        <p class="text-red-500 text-sm mt-2" *ngIf="vipCompanions.length >= maxCompanions">Maximum of 10 companions can be added.</p>
+      </div>
+
+      <div>
+        <label for="vip-visit-date" class="block text-sm font-medium text-gray-700">Date of Visit</label>
+        <input type="date" id="vip-visit-date" [(ngModel)]="vipVisitDate" class="mt-1 block w-full px-4 py-3 border rounded-lg">
+      </div>
+
+      <div class="text-center">
+        <p class="text-gray-600 text-sm">Protocol Fee per person: <span class="font-semibold text-indigo-600">₹{{ vipPrice }}</span></p>
+        <p class="text-2xl font-bold text-gray-800 mt-2">Total Payable: <span id="vip-total-amount">{{ calculateVipTotal() }}</span></p>
+        <p class="text-sm mt-2 font-medium text-green-600" *ngIf="vipPaymentMessageVisible">Booking ID generated: <span id="vip-booking-id">{{ vipBookingId }}</span></p>
+        <p class="text-sm mt-2 font-medium text-red-600" *ngIf="vipPaymentErrorVisible">Please fill all required fields and select a protocol.</p>
+      </div>
+
+      <button class="w-full bg-indigo-600 text-white py-3 rounded-lg" (click)="completeVipBooking()">Complete Booking</button>
+    </div>
+  </div>
+
+  <!-- LOCALIDE DARSHAN -->
+  <div *ngIf="view === 'localide'">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-semibold text-gray-800">Book Localide Darshan</h2>
+      <button class="text-sm font-medium text-blue-600 hover:underline" (click)="showDashboard()">&larr; Back to Dashboard</button>
+    </div>
+
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-6" role="alert">
+      <strong class="font-bold block mb-1">Statutory Warning:</strong>
+      <span class="block text-sm">This booking is strictly reserved for <strong>residents of Ujjain City</strong>. Aadhar eKYC is <strong>MANDATORY</strong>. If any detail is found invalid, booking will be cancelled without refund.</span>
+    </div>
+
+    <div class="space-y-4">
+      <div class="border border-blue-400 bg-blue-50 rounded-lg p-4">
+        <h3 class="text-lg font-medium text-blue-800 mb-2">Primary Devotee (You)</h3>
+        <div class="flex justify-between items-center">
+          <p id="localide-devotee-name" class="text-gray-800 font-semibold text-lg">{{ userData.fullName }}</p>
+          <div class="flex items-center">
+            <span id="localide-ekyc-badge" class="px-3 py-1 text-sm font-medium rounded-full" [ngClass]="localideEkycComplete ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'">
+              {{ localideEkycComplete ? 'eKYC Complete' : 'eKYC Pending' }}
+            </span>
+            <button id="devotee-ekyc-button" class="ml-3 bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-1 px-3 rounded-lg" (click)="completeLocalideEkyc()">Complete eKYC</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-medium text-gray-700 mb-2">Companions (max 10)</h3>
+        <p class="text-sm text-gray-500 mb-3">eKYC is required for every companion before booking.</p>
+        <div id="localide-companions-container" class="space-y-4">
+          <div *ngFor="let c of localideCompanions; let i = index" class="border border-gray-300 rounded-lg p-4">
+            <div class="flex justify-between items-center mb-2">
+              <h4>Companion {{ i + 1 }}</h4>
+              <button (click)="removeLocalideCompanion(i)" class="text-red-500">Remove</button>
+            </div>
+            <input type="text" [(ngModel)]="localideCompanions[i].name" placeholder="Full Name" class="mt-1 block w-full px-4 py-2 border rounded-lg">
+          </div>
+        </div>
+        <button class="mt-4 w-full bg-green-500 text-white py-2 rounded-lg" (click)="addLocalideCompanion()" [disabled]="localideCompanions.length >= maxCompanions">Add Companion</button>
+      </div>
+
+      <div>
+        <label for="localide-visit-date" class="block text-sm font-medium text-gray-700">Date of Visit</label>
+        <input type="date" id="localide-visit-date" [(ngModel)]="localideVisitDate" class="mt-1 block w-full px-4 py-3 border rounded-lg">
+      </div>
+
+      <div id="localide-slots-section" *ngIf="localideSlotsVisible">
+        <label class="block text-sm font-medium text-gray-700">Available Slots</label>
+        <div id="localide-slots-container" class="mt-1 grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <!-- sample slots -->
+          <button type="button" class="slot-button border rounded-lg px-3 py-2" (click)="localideVisitTime='09:00 AM'">09:00 AM</button>
+          <button type="button" class="slot-button border rounded-lg px-3 py-2" (click)="localideVisitTime='11:00 AM'">11:00 AM</button>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <p class="text-gray-600 text-sm">Price per person: <span class="font-semibold text-blue-600">Free (Requires Ujjain Residence Proof)</span></p>
+        <p class="text-2xl font-bold text-gray-800 mt-2">Total Payable: <span id="localide-total-amount">₹0</span></p>
+        <p class="text-sm mt-2 font-medium text-green-600" *ngIf="localideBookingId">Booking ID generated: <span>{{ localideBookingId }}</span></p>
+        <p class="text-sm mt-2 font-medium text-red-600" *ngIf="!localideEkycComplete">Please ensure eKYC is complete for all devotees and a visit date is selected.</p>
+      </div>
+
+      <button class="w-full bg-blue-600 text-white py-3 rounded-lg" [disabled]="!localideEkycComplete || !localideVisitDate" (click)="completeLocalideBooking()">Complete Booking (eKYC & Time Slot Required)</button>
+    </div>
+  </div>
+
+  <!-- BHASM ARTI -->
+  <div *ngIf="view === 'bhasm'">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-semibold text-gray-800">Book Bhasm Arti</h2>
+      <button class="text-sm font-medium text-blue-600 hover:underline" (click)="showDashboard()">&larr; Back to Dashboard</button>
+    </div>
+
+    <div class="bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded-lg relative mb-6">
+      <strong class="font-bold block mb-1">Important Notice:</strong>
+      <span class="block text-sm">Bhasm Arti has limited slots. <strong>Aadhar eKYC is MANDATORY</strong>. The booking is non-refundable.</span>
+    </div>
+
+    <div class="space-y-4">
+      <div class="border border-red-400 bg-red-50 rounded-lg p-4">
+        <h3 class="text-lg font-medium text-red-800 mb-2">Primary Devotee (You)</h3>
+        <div class="flex justify-between items-center">
+          <p id="bhasm-arti-devotee-name" class="text-gray-800 font-semibold text-lg">{{ userData.fullName }}</p>
+          <div class="flex items-center">
+            <span id="bhasm-arti-ekyc-badge" class="px-3 py-1 text-sm font-medium rounded-full" [ngClass]="bhasmArtiEkycComplete ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'">
+              {{ bhasmArtiEkycComplete ? 'eKYC Complete' : 'eKYC Pending' }}
+            </span>
+            <button class="ml-3 bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-1 px-3 rounded-lg" (click)="completeBhasmEkyc()">Complete eKYC</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-medium text-gray-700 mb-2">Companions (max 10)</h3>
+        <p class="text-sm text-gray-500 mb-3">Aadhar eKYC is required for every companion before booking.</p>
+        <div id="bhasm-arti-companions-container" class="space-y-4">
+          <div *ngFor="let c of bhasmArtiCompanions; let i = index" class="border border-gray-300 rounded-lg p-4">
+            <div class="flex justify-between items-center mb-2">
+              <h4>Companion {{ i + 1 }}</h4>
+              <button (click)="removeBhasmArtiCompanion(i)" class="text-red-500">Remove</button>
+            </div>
+            <input type="text" [(ngModel)]="bhasmArtiCompanions[i].name" placeholder="Full Name" class="mt-1 block w-full px-4 py-2 border rounded-lg">
+          </div>
+        </div>
+        <button class="mt-4 w-full bg-green-500 text-white py-2 rounded-lg" (click)="addBhasmArtiCompanion()" [disabled]="bhasmArtiCompanions.length >= maxCompanions">Add Companion</button>
+      </div>
+
+      <div>
+        <label for="bhasm-arti-visit-date" class="block text-sm font-medium text-gray-700">Date of Visit</label>
+        <input type="date" id="bhasm-arti-visit-date" [(ngModel)]="bhasmArtiVisitDate" class="mt-1 block w-full px-4 py-3 border rounded-lg">
+      </div>
+
+      <div id="bhasm-arti-slots-section" *ngIf="bhasmArtiSlotsVisible">
+        <label class="block text-sm font-medium text-gray-700">Available Slots (Bhasm Arti)</label>
+        <p class="text-sm text-gray-500 mb-2">Bhasm Arti usually starts at 4:00 AM.</p>
+        <div id="bhasm-arti-slots-container" class="mt-1 grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <button class="slot-button border rounded-lg px-3 py-2">04:00 AM</button>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <p class="text-gray-600 text-sm">Price per person: <span class="font-semibold text-blue-600">₹750</span></p>
+        <p class="text-2xl font-bold text-gray-800 mt-2">Total Payable: <span id="bhasm-arti-total-amount">₹750</span></p>
+        <p class="text-sm mt-2 font-medium text-green-600" *ngIf="bhasmArtiBookingId">Booking ID generated: <span>{{ bhasmArtiBookingId }}</span></p>
+        <p class="text-sm mt-2 font-medium text-red-600" *ngIf="!bhasmArtiEkycComplete">Please ensure eKYC is complete for all devotees and a time slot is selected.</p>
+      </div>
+
+      <button class="w-full bg-blue-600 text-white py-3 rounded-lg" [disabled]="!bhasmArtiEkycComplete || !bhasmArtiVisitDate" (click)="completeBhasmArtiBooking()">Complete Booking (eKYC & Time Slot Required)</button>
+    </div>
+  </div>
+
+  <!-- Footer links -->
+  <div class="mt-8 text-center text-sm text-gray-500">
+    <a href="#" *ngIf="view !== 'login'" (click)="$event.preventDefault(); showLogin()" class="text-blue-600 hover:underline">Already registered? Login with Mobile Number</a>
+    <a href="#" *ngIf="view === 'login'" (click)="$event.preventDefault(); showRegistration()" class="text-blue-600 hover:underline"> &larr; Back to Registration</a>
+  </div>
+</div>

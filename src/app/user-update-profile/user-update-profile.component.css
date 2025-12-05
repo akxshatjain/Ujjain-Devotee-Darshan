@@ -1,0 +1,15 @@
+.heading {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.copy {
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+@media (min-width: 768px) {
+  .flowbite-card {
+    padding: 1.5rem;
+  }
+}

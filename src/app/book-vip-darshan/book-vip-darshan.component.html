@@ -1,0 +1,83 @@
+<div class="page">
+  <div class="card">
+    <h1 class="title">{{ title }}</h1>
+    <p class="subtitle">{{ subtitle }}</p>
+
+    <div class="header-row">
+      <h2 class="section">{{ sectionTitle }}</h2>
+    </div>
+
+    <div *ngIf="!devoteee_name" class="display-box">
+        <h1 class="mb-2 text-gray-500">Complete profile required!</h1>
+        <a routerLink="/dashboard/updateprofile"class="link">Go to Profile Dashboard →</a>
+    </div>
+
+    <div *ngIf="devoteee_name">
+      <ng-container *ngIf="!bookingSuccess; else successTemplate">
+        <label class="label">Primary Devotee</label>
+        <div class="display-box">{{ devoteee_name }}</div> <label class="label">Protocol</label>
+        <select class="input" [(ngModel)]="selectedProtocolValue">
+          <option value="" disabled>Select Protocol</option>
+          <option *ngFor="let p of protocols" [value]="p.value">{{ p.label }}</option>
+        </select>
+
+        <label class="label">Companions List ({{ companions.length }})</label>
+        <div class="companions">
+          <div *ngFor="let c of companions; let i = index" class="companion-item">
+            <div class="companion-grid">
+              <input class="input" type="text" placeholder="Full name" [(ngModel)]="c.name" />
+              <input class="input" type="tel" placeholder="Phone" [(ngModel)]="c.phone" />
+              <input class="input" type="number" placeholder="Age" [(ngModel)]="c.age" />
+            </div>
+            <div class="companion-actions">
+              <button class="icon danger" type="button" (click)="removeCompanion(i)">✕</button>
+            </div>
+          </div>
+          <button class="btn success subtle" type="button" (click)="addCompanion()">+ Add Companion</button>
+        </div>
+
+        <label class="label">Date of Visit</label>
+        <input class="input" type="date" [(ngModel)]="visitDate" (change)="onDateChange()" /> <label class="label">Available Slots</label>
+        <div class="slots-grid">
+            <button *ngFor="let s of slots_data" class="slot-btn"
+            [class.selected]="selectedSlot?.slot_name === s.slot_name"
+            [class.disabled]="s.slot_capacity === 0"
+            [disabled]="s.slot_capacity === 0"
+            (click)="selectSlot(s)">
+            <div class="slot-time">{{ s.slot_start_time |time12hr }} to {{ s.slot_end_time | time12hr }}</div>
+            <div class="slot-seats">{{ s.slot_capacity }} Seats</div>
+          </button>
+        </div>
+<p *ngIf="slotsFetched && slots_data.length === 0" class="muted small">
+  No slots available for the selected date.
+</p>
+
+        <label class="label">Authority Letter (PDF)</label>
+        <input class="input" type="file" accept=".pdf" (change)="handleFileChange($event)" />
+        <div *ngIf="authorityLetterFile" class="muted small">Selected: {{ authorityLetterFile.name }}</div> <div class="draft-row">
+          <input id="draft" type="checkbox" [(ngModel)]="saveAsDraft" />
+          <label for="draft" class="muted">Save as Draft</label>
+        </div>
+
+        <div class="muted small">Fee: {{ feePerPerson }} | Total: {{ total }}</div>
+
+        <p *ngIf="apiError" class="error">{{ apiError }}</p>
+
+        <button class="btn primary xl" (click)="submitBooking()" [disabled]="loading">
+          <span *ngIf="loading">Processing...</span>
+          <span *ngIf="!loading">Apply For Appointment</span>
+        </button>
+      </ng-container>
+
+      <ng-template #successTemplate>
+        <div class="success-card">
+          <span class="success-badge">Appointment applied successfully.</span>
+          <div class="button-group">
+            <button class="btn success xl" (click)="navigateTo('/dashboard/mybookings')">See Your Bookings</button>
+            <button class="btn primary subtle xl" (click)="navigateTo('/dashboard')">Back to Dashboard</button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

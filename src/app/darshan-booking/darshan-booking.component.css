@@ -1,0 +1,44 @@
+/* src/styles.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f7fafc; /* This is equivalent to Tailwind's `bg-gray-50` */
+}
+
+/* darshan-booking.component.css */
+
+/* NOTE: The style for .erp-card is no longer needed here 
+  because the `shadow-lg` class in your HTML already provides the box-shadow.
+*/
+
+.progress-bar-container {
+  /* We use @apply to pull in Tailwind's utility classes */
+  @apply h-1 bg-gray-200 rounded-full overflow-hidden;
+}
+
+.progress-bar {
+  @apply h-full bg-blue-600 rounded-full;
+  /* The transition is now handled by Tailwind classes in the HTML (optional)
+     but can be added here if you prefer. */
+  transition: width 0.3s ease-in-out;
+}
+
+/* Base styles for all slot buttons */
+.slot-button {
+  @apply border rounded-lg px-3 py-2 transition-colors duration-200;
+  
+  /* These are equivalent to your original flex properties */
+  @apply flex flex-col items-center text-center; 
+}
+
+/* Styles for a slot button ONLY when it has the 'selected' class */
+.slot-button.selected {
+  @apply bg-blue-600 text-white border-blue-600 font-semibold;
+}
+
+/* This ensures any text inside a selected button also becomes white */
+.slot-button.selected div {
+  @apply text-white;
+}

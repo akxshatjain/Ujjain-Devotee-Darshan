@@ -1,0 +1,53 @@
+
+<div class="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+  <div *ngIf="show_dashboard; else noDetails" class="w-full max-w-2xl bg-white shadow-lg rounded-lg p-10 text-center">
+    <h1 class="text-2xl font-bold text-gray-800 mb-2">{{ title }}</h1>
+    <p class="text-gray-600 mb-4">
+      {{ welcome }}
+      <span *ngIf="devoteee_name"> {{ devoteee_name }} </span>
+    </p>
+<!-- *ngIf="is_ekyc_complete === 0" -->
+    <div   *ngIf="!devoteee_name" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+      <strong class="font-semibold">Please complete your profile to continue.</strong>
+      <button
+        (click)="completeKYC()"
+        class="ml-2 text-sm border border-gray-500 rounded px-2 py-1 hover:bg-gray-200 transition">
+        Complete the Profile
+      </button>
+    </div>
+
+    <div class="grid gap-3 mt-4">
+      <button
+        *ngFor="let action of defaultActions"
+        (click)="onActionClicked(action.site)"
+        [ngClass]="{
+          'bg-green-500 hover:bg-green-600 text-white': action.button_color === 'green',
+          'bg-blue-500 hover:bg-blue-600 text-white': action.button_color === 'blue',
+          'bg-gray-200 hover:bg-gray-300 text-gray-800': action.button_color === 'gray'
+        }"
+        class="w-full py-2 rounded-full transition">
+        {{ action.label }}
+      </button>
+    </div>
+
+    <div class="mt-5">
+      <button
+        (click)="logout()"
+        class="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-6 rounded-full transition">
+        Logout
+      </button>
+    </div>
+  </div>
+
+  <ng-template #noDetails>
+    <!-- <p class="text-gray-600">
+      Details Not Found!
+      <span
+        class="text-red-600 cursor-pointer underline"
+        (click)="logout()"
+      >
+        Login First
+      </span>
+    </p> -->
+  </ng-template>
+</div>

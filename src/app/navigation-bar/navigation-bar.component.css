@@ -1,0 +1,19 @@
+/* Optional: smooth background transitions */
+nav {
+  transition: background-color 0.3s ease;
+}
+
+/* Active link highlight */
+a[routerLinkActive] {
+  font-weight: 600;
+}
+
+/* Mobile menu animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+div[ngIf] {
+  animation: fadeIn 0.2s ease-in-out;
+}

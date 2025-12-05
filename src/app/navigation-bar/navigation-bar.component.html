@@ -1,0 +1,78 @@
+<nav class="bg-sky-100 dark:bg-primary-700 w-full shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 py-6 flex items-center justify-between">
+
+    <!-- Brand + Back/Next buttons -->
+    <div class="flex items-center">
+      <a routerLink="/" class="flex items-center">
+        <span class="text-lg font-bold text-gray-900 dark:text-white whitespace-nowrap">
+          Darshan Mahakaal
+        </span>
+      </a>
+
+      <div *ngIf="userLoggedIn$ | async" class="flex space-x-3 ml-4">
+        <button
+          (click)="goBack()"
+          class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded-full hover:bg-blue-100 hover:text-blue-800"
+        >Back</button>
+
+        <button
+          (click)="goForward()"
+          class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded-full hover:bg-blue-100 hover:text-blue-800"
+        >Next</button>
+      </div>
+    </div>
+
+    <!-- Desktop nav links -->
+    <ul class="hidden md:flex items-center space-x-6 text-sm font-medium">
+      <li><a routerLink="/" routerLinkActive="text-blue-600 font-semibold" class="text-gray-800 dark:text-white hover:text-blue-600">Home</a></li>
+
+      <ng-container *ngIf="userLoggedIn$ | async; else loggedOutLinks">
+        <li><a routerLink="/userdashboard" routerLinkActive="text-blue-600 font-semibold" class="text-gray-800 dark:text-white hover:text-blue-600">Dashboard</a></li>
+        <li><a routerLink="/dashboard/viewprofile" routerLinkActive="text-blue-600 font-semibold" class="text-gray-800 dark:text-white hover:text-blue-600">Profile</a></li>
+      </ng-container>
+
+      <ng-template #loggedOutLinks>
+        <li><a routerLink="/registration" routerLinkActive="text-blue-600 font-semibold" class="text-gray-800 dark:text-white hover:text-blue-600">Registration</a></li>
+        <li><a routerLink="/verifylogin" routerLinkActive="text-blue-600 font-semibold" class="text-gray-800 dark:text-white hover:text-blue-600">Login</a></li>
+      </ng-template>
+    </ul>
+
+    <!-- Logout button -->
+    <div class="hidden md:flex">
+      <button *ngIf="userLoggedIn$ | async" (click)="logout()" class="px-3 py-1 text-sm font-medium text-orange-600 border border-orange-600 rounded-full hover:bg-orange-100 hover:text-orange-800">
+        Logout
+      </button>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <div class="md:hidden">
+      <button (click)="menuOpen = !menuOpen" class="p-2 text-gray-700 rounded-md hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ✅ Mobile Menu -->
+  <div *ngIf="menuOpen" class="md:hidden bg-sky-50 dark:bg-primary-800 shadow-inner">
+    <ul class="flex flex-col items-start p-4 space-y-3 text-base font-medium">
+      <li><a routerLink="/" (click)="menuOpen=false" class="w-full block text-gray-800 dark:text-white hover:text-blue-600">Home</a></li>
+
+      <ng-container *ngIf="userLoggedIn$ | async; else mobileLoggedOut">
+        <li><a routerLink="/userdashboard" (click)="menuOpen=false" class="w-full block text-gray-800 dark:text-white hover:text-blue-600">Dashboard</a></li>
+        <li><a routerLink="/dashboard/viewprofile" (click)="menuOpen=false" class="w-full block text-gray-800 dark:text-white hover:text-blue-600">Profile</a></li>
+        <li>
+          <button (click)="logout(); menuOpen=false" class="w-full text-left text-orange-600">
+            Logout
+          </button>
+        </li>
+      </ng-container>
+
+      <ng-template #mobileLoggedOut>
+        <li><a routerLink="/registration" (click)="menuOpen=false" class="w-full block text-gray-800 dark:text-white hover:text-blue-600">Registration</a></li>
+        <li><a routerLink="/verifylogin" (click)="menuOpen=false" class="w-full block text-gray-800 dark:text-white hover:text-blue-600">Login</a></li>
+      </ng-template>
+    </ul>
+  </div>
+</nav>

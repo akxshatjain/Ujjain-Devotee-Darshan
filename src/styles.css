@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'flowbite';
+@import 'ngx-toastr/toastr.css'; /* 👈 Must come before custom toastr CSS */
+
+/* ===== GLOBAL APP STYLES ===== */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f7fafc;
+}
+
+/* ============================================================= */
+/* ✅ FINAL TOASTR DESIGN (Angular 19 + Tailwind + Flowbite)     */
+/* ============================================================= */
+
+/* ✅ Container position — top-right corner */
+#toast-container.toast-top-right {
+  position: fixed !important;
+  top: 1rem !important;
+  right: 1rem !important;
+  z-index: 99999 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  gap: 8px !important;
+  pointer-events: none !important;
+}
+
+/* ✅ Toast Box (auto width, fixed height) */
+#toast-container > div {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  padding: 10px 16px !important;
+  border-radius: 10px !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+  width: fit-content !important; /* 👈 auto size by text */
+  max-width: 90vw !important;
+  min-height: 1cm !important;
+  color: #fff !important;
+  position: relative !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  pointer-events: auto !important;
+  line-height: 1 !important;
+}
+
+/* ✅ Success Toast (Green) */
+.toast-success {
+  background-color: #22c55e !important; /* Tailwind green-500 */
+}
+
+/* ✅ Error Toast (Red) */
+.toast-error {
+  background-color: #ef4444 !important; /* Tailwind red-500 */
+}
+
+/* ✅ Progress bar colors */
+/* ✅ Progress bar — fully inside toast (no overflow, clean edges) */
+#toast-container > div .toast-progress {
+  position: absolute !important;
+  bottom: 4px !important;
+  left: 8px !important;
+  right: 8px !important;
+  height: 3px !important;
+  border-radius: 2px !important;
+  opacity: 0.9 !important;
+  transition: width 0.35s linear !important; /* ✅ smooth shrinking */
+}
+
+
+/* ✅ Matching soft color tones */
+#toast-container > .toast-success .toast-progress {
+  background-color: #86efac !important; /* Lighter green (green-300) */
+}
+
+#toast-container > .toast-error .toast-progress {
+  background-color: #fca5a5 !important; /* Lighter red (red-300) */
+}
+
+
+/* ✅ Message text area */
+.toast-message {
+  flex: 1 !important;
+  text-align: left !important;
+  margin: 0 !important;
+  padding-right: 8px !important;
+}
+
+/* ✅ Close (X) Button — properly spaced */
+.toast-close-button {
+  position: relative !important;
+  flex-shrink: 0 !important;
+  margin-left: 10px !important;
+  font-size: 1.1rem !important;
+  color: #fff !important;
+  opacity: 0.8 !important;
+  cursor: pointer;
+  background: transparent !important;
+  border: none !important;
+  line-height: 1 !important;
+  pointer-events: auto;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.toast-close-button:hover {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* ✅ Slide-in Animation (Right → Left) */
+#toast-container.toast-top-right > div {
+  animation: slideInFromRight 0.35s ease forwards;
+}
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ✅ Fade-out transition */
+.toast {
+  transition: opacity 0.4s ease !important;
+}

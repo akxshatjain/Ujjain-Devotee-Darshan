@@ -1,0 +1,142 @@
+<div class="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+  <!-- ✅ Success message -->
+  <div *ngIf="submitted; else updateForm" class="w-full max-w-2xl bg-white p-10 rounded-2xl shadow">
+    <div class="flex items-center gap-4">
+      <img
+        *ngIf="profileData?.avatar"
+        [src]="profileData.avatar"
+        alt="Profile avatar"
+        class="w-20 h-20 rounded-full object-cover"
+      />
+      <div>
+        <h3 class="text-2xl font-semibold">Profile updated</h3>
+        <p class="text-sm text-gray-600 mt-1">
+          Your profile details have been saved successfully.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-6 flex gap-3 justify-end">
+      <button
+        class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700"
+        (click)="goToDashboard()"
+      >
+        Go to Dashboard
+      </button>
+    </div>
+  </div>
+
+  <!-- ✅ Profile Update Form -->
+  <ng-template #updateForm>
+    <div class="w-full max-w-4xl bg-white p-10 rounded-2xl shadow grid grid-cols-1 md:grid-cols-3 gap-6">
+      <aside class="md:col-span-1 flex flex-col items-center text-center p-4">
+        <img
+          *ngIf="profileData?.avatar"
+          [src]="profileData.avatar"
+          alt="User avatar"
+          class="w-32 h-32 rounded-full object-cover"
+        />
+        <h2 class="mt-4 text-xl font-semibold">Update Your Profile</h2>
+        <p class="mt-2 text-sm text-gray-600">
+          A few details to complete your approver account.
+        </p>
+        <span class="mt-4 bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">Approver</span>
+      </aside>
+
+      <section class="md:col-span-2">
+        <form [formGroup]="profileForm" (ngSubmit)="handleSubmit()" class="space-y-5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="name" class="font-medium">Full name</label>
+              <input
+                id="name"
+                type="text"
+                formControlName="devoteee_name"
+                class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+                placeholder="John Doe"
+              />
+            </div>
+
+            <div>
+              <label for="gender" class="font-medium">Gender</label>
+              <select
+                id="gender"
+                formControlName="gender"
+                class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+              >
+                <option value="" disabled>Select Gender</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+                <option value="non-binary">Non-binary</option>
+                <option value="prefer-not-to-say">Prefer not to say</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="dob" class="font-medium">Date of birth</label>
+              <input
+                id="dob"
+                type="date"
+                formControlName="dob"
+                class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+              />
+            </div>
+
+            <div>
+              <label for="aadhar" class="font-medium">Aadhar (optional)</label>
+              <input
+                id="aadhar"
+                type="text"
+                formControlName="aadhar"
+                placeholder="1234 5678 9012"
+                maxlength="20"
+                class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="address" class="font-medium">Address</label>
+            <textarea
+              id="address"
+              formControlName="address"
+              rows="3"
+              placeholder="123 Main St, Anytown"
+              class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+            ></textarea>
+          </div>
+
+          <div class="flex items-center justify-between gap-4">
+            <p class="text-sm text-gray-500">
+              Fields can be updated later from your profile settings.
+            </p>
+            <div class="flex items-center gap-3">
+              <button
+                type="button"
+                class="border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-100"
+                (click)="resetForm()"
+              >
+                Reset
+              </button>
+
+              <button
+                type="submit"
+                [disabled]="loading"
+                class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 flex items-center"
+              >
+                <svg *ngIf="loading" class="animate-spin h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                </svg>
+                <span *ngIf="!loading">Update Profile</span>
+                <span *ngIf="loading">Saving…</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </section>
+    </div>
+  </ng-template>
+</div>
