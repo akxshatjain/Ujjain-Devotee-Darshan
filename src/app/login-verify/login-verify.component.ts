@@ -14,7 +14,7 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./login-verify.component.css'],
 })
 export class LoginVerifyComponent implements OnInit {
-  phone: string = '222';
+  phone: string = '';
   temp_pwd: string = 'Mpsedc123';
   user_type: string = 'Devoteee';
   loading: boolean = false;

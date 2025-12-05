@@ -3,13 +3,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
+
+
 @Injectable({
   providedIn: 'root',
 })
 export class DevoteeService {
 
   // ✅ CHANGE URL HERE ONLY
-  private BASE_URL = 'http://10.120.9.42:8890/';
+  private BASE_URL = 'http://10.120.10.245:8890/';
 
   private loggedInSubject = new BehaviorSubject<boolean>(false);
   public loggedIn$ = this.loggedInSubject.asObservable();
