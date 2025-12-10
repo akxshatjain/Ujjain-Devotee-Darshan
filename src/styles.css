@@ -5,12 +5,37 @@
 @tailwind utilities;
 
 @import 'flowbite';
-@import 'ngx-toastr/toastr.css'; /* 👈 Must come before custom toastr CSS */
+@import 'ngx-toastr/toastr';
+/* 👈 Must come before custom toastr CSS */
 
 /* ===== GLOBAL APP STYLES ===== */
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #f7fafc;
+  background-color: #fffbf0;
+  /* cream-50 */
+  color: #1f2937;
+  /* gray-800 */
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-pulse-soft {
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 /* ============================================================= */
@@ -31,7 +56,7 @@ body {
 }
 
 /* ✅ Toast Box (auto width, fixed height) */
-#toast-container > div {
+#toast-container>div {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
@@ -41,7 +66,8 @@ body {
   font-size: 0.9rem !important;
   font-weight: 500 !important;
   white-space: nowrap !important;
-  width: fit-content !important; /* 👈 auto size by text */
+  width: fit-content !important;
+  /* 👈 auto size by text */
   max-width: 90vw !important;
   min-height: 1cm !important;
   color: #fff !important;
@@ -53,17 +79,19 @@ body {
 
 /* ✅ Success Toast (Green) */
 .toast-success {
-  background-color: #22c55e !important; /* Tailwind green-500 */
+  background-color: #22c55e !important;
+  /* Tailwind green-500 */
 }
 
 /* ✅ Error Toast (Red) */
 .toast-error {
-  background-color: #ef4444 !important; /* Tailwind red-500 */
+  background-color: #ef4444 !important;
+  /* Tailwind red-500 */
 }
 
 /* ✅ Progress bar colors */
 /* ✅ Progress bar — fully inside toast (no overflow, clean edges) */
-#toast-container > div .toast-progress {
+#toast-container>div .toast-progress {
   position: absolute !important;
   bottom: 4px !important;
   left: 8px !important;
@@ -71,17 +99,20 @@ body {
   height: 3px !important;
   border-radius: 2px !important;
   opacity: 0.9 !important;
-  transition: width 0.35s linear !important; /* ✅ smooth shrinking */
+  transition: width 0.35s linear !important;
+  /* ✅ smooth shrinking */
 }
 
 
 /* ✅ Matching soft color tones */
-#toast-container > .toast-success .toast-progress {
-  background-color: #86efac !important; /* Lighter green (green-300) */
+#toast-container>.toast-success .toast-progress {
+  background-color: #86efac !important;
+  /* Lighter green (green-300) */
 }
 
-#toast-container > .toast-error .toast-progress {
-  background-color: #fca5a5 !important; /* Lighter red (red-300) */
+#toast-container>.toast-error .toast-progress {
+  background-color: #fca5a5 !important;
+  /* Lighter red (red-300) */
 }
 
 
@@ -108,20 +139,23 @@ body {
   pointer-events: auto;
   transition: transform 0.15s ease, opacity 0.15s ease;
 }
+
 .toast-close-button:hover {
   opacity: 1;
   transform: scale(1.2);
 }
 
 /* ✅ Slide-in Animation (Right → Left) */
-#toast-container.toast-top-right > div {
+#toast-container.toast-top-right>div {
   animation: slideInFromRight 0.35s ease forwards;
 }
+
 @keyframes slideInFromRight {
   from {
     transform: translateX(100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;

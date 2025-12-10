@@ -19,12 +19,18 @@ export const routes: Routes = [
   { path: 'homepage', component: HomepageComponent },
 
   // Private routes (guarded by AuthGuard)
-  { path: 'userdashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'dashboard/vipdarshan', component: BookVipDarshanComponent, canActivate: [AuthGuard] },
-  { path: 'dashboard/mybookings', component: MyBookingsComponent, canActivate: [AuthGuard] },
-  { path: 'dashboard/updateprofile', component: UserUpdateProfileComponent, canActivate: [AuthGuard] },
-  { path: 'dashboard/viewprofile', component: UserViewProfileComponent, canActivate: [AuthGuard] },
-  { path: 'darshan-booking', component: DarshanBookingComponent, canActivate: [AuthGuard] },
+  { path: 'userdashboard', component: DashboardComponent },
+  // { path: 'userdashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  // { path: 'dashboard/vipdarshan', component: BookVipDarshanComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/vipdarshan', component: BookVipDarshanComponent },
+  // { path: 'dashboard/mybookings', component: MyBookingsComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/mybookings', component: MyBookingsComponent },
+  // { path: 'dashboard/updateprofile', component: UserUpdateProfileComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/updateprofile', component: UserUpdateProfileComponent },
+  { path: 'dashboard/viewprofile', component: UserViewProfileComponent},
+  // { path: 'dashboard/viewprofile', component: UserViewProfileComponent, canActivate: [AuthGuard] },
+  { path: 'darshan-booking', component: DarshanBookingComponent },
+  // { path: 'darshan-booking', component: DarshanBookingComponent, canActivate: [AuthGuard] },
 
   // Fallback route
   { path: '**', redirectTo: '/homepage' }  

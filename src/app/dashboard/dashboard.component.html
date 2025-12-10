@@ -1,53 +1,100 @@
+<div class="min-h-screen bg-cream-50 pb-12">
+  <!-- Minimal Header for Dashboard -->
+  <header class="bg-saffron-600 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <!-- Optional: Logo could go here -->
+        <h1 class="text-white text-xl font-bold tracking-wide">SHREE MAHAKAALESHWAR</h1>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="text-white/90 text-sm hidden sm:block">{{ title }}</span>
+        <button (click)="logout()"
+          class="text-white hover:bg-saffron-700 px-3 py-1 rounded-md text-sm font-medium transition-colors">
+          Logout
+        </button>
+      </div>
+    </div>
+  </header>
 
-<div class="min-h-screen bg-gray-50 flex items-center justify-center p-6">
-  <div *ngIf="show_dashboard; else noDetails" class="w-full max-w-2xl bg-white shadow-lg rounded-lg p-10 text-center">
-    <h1 class="text-2xl font-bold text-gray-800 mb-2">{{ title }}</h1>
-    <p class="text-gray-600 mb-4">
-      {{ welcome }}
-      <span *ngIf="devoteee_name"> {{ devoteee_name }} </span>
-    </p>
-<!-- *ngIf="is_ekyc_complete === 0" -->
-    <div   *ngIf="!devoteee_name" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-      <strong class="font-semibold">Please complete your profile to continue.</strong>
-      <button
-        (click)="completeKYC()"
-        class="ml-2 text-sm border border-gray-500 rounded px-2 py-1 hover:bg-gray-200 transition">
-        Complete the Profile
-      </button>
+  <div *ngIf="show_dashboard; else loadingOrError" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 fade-in-up">
+
+    <!-- Welcome Section -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gold-200 p-6 mb-8 relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-saffron-100 rounded-full blur-3xl -mr-16 -mt-16 opacity-50"></div>
+
+      <div class="relative z-10">
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">
+          {{ welcome }} <span class="text-saffron-600">{{ devoteee_name }}</span>
+        </h2>
+        <p class="text-gray-600">Manage your darshan bookings and profile details.</p>
+      </div>
+
+      <!-- Action Required Alert -->
+      <div *ngIf="!devoteee_name || is_ekyc_complete === 0"
+        class="mt-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-md flex items-start justify-between flex-wrap gap-4 animate-pulse-soft">
+        <div class="flex gap-3">
+          <svg class="h-6 w-6 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <div>
+            <h3 class="text-sm font-medium text-red-800">Profile Incomplete</h3>
+            <p class="text-sm text-red-700 mt-1">Complete your KYC verification to book darshans.</p>
+          </div>
+        </div>
+        <button (click)="completeKYC()"
+          class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+          Complete Profile
+        </button>
+      </div>
     </div>
 
-    <div class="grid gap-3 mt-4">
-      <button
-        *ngFor="let action of defaultActions"
-        (click)="onActionClicked(action.site)"
-        [ngClass]="{
-          'bg-green-500 hover:bg-green-600 text-white': action.button_color === 'green',
-          'bg-blue-500 hover:bg-blue-600 text-white': action.button_color === 'blue',
-          'bg-gray-200 hover:bg-gray-300 text-gray-800': action.button_color === 'gray'
-        }"
-        class="w-full py-2 rounded-full transition">
-        {{ action.label }}
-      </button>
+    <!-- Services Grid -->
+    <h3 class="text-lg font-semibold text-gray-800 mb-4 pl-1 border-l-4 border-saffron-500">Available Services</h3>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div *ngFor="let action of defaultActions" (click)="onActionClicked(action.site)"
+        class="group bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-saffron-300 transition-all duration-300 cursor-pointer relative overflow-hidden">
+
+        <!-- Hover Gradient Background -->
+        <div
+          class="absolute inset-0 bg-gradient-to-br from-transparent to-saffron-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        </div>
+
+        <div class="relative z-10 flex items-start justify-between">
+          <div
+            class="p-3 rounded-lg bg-saffron-50 text-saffron-600 group-hover:bg-saffron-600 group-hover:text-white transition-colors duration-300">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" [attr.d]="action.icon"></path>
+            </svg>
+          </div>
+
+          <div class="bg-gray-50 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity -mr-2 -mt-2">
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </div>
+        </div>
+
+        <div class="relative z-10 mt-4">
+          <h4 class="text-lg font-semibold text-gray-900 group-hover:text-saffron-700 transition-colors">{{ action.label
+            }}</h4>
+          <p class="text-sm text-gray-500 mt-1 group-hover:text-gray-600">{{ action.description }}</p>
+        </div>
+      </div>
     </div>
 
-    <div class="mt-5">
-      <button
-        (click)="logout()"
-        class="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-6 rounded-full transition">
-        Logout
-      </button>
-    </div>
   </div>
 
-  <ng-template #noDetails>
-    <!-- <p class="text-gray-600">
-      Details Not Found!
-      <span
-        class="text-red-600 cursor-pointer underline"
-        (click)="logout()"
-      >
-        Login First
-      </span>
-    </p> -->
+  <ng-template #loadingOrError>
+    <div class="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
+      <div class="w-16 h-16 border-4 border-saffron-200 border-t-saffron-600 rounded-full animate-spin mb-4"></div>
+      <p class="text-gray-500 animate-pulse">Loading your dashboard...</p>
+
+      <!-- Fallback Logout if stuck -->
+      <button (click)="logout()" class="mt-8 text-sm text-gray-400 hover:text-gray-600 underline">
+        Return to Login
+      </button>
+    </div>
   </ng-template>
 </div>

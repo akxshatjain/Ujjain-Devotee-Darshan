@@ -7,19 +7,18 @@ import { LoginVerifyComponent } from './login-verify/login-verify.component';
 import { Routes } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
-
-
+import { LoaderComponent } from './shared/loader/loader.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
- imports: [
-  CommonModule,
-  FormsModule,
-  NavigationBarComponent,
-  RouterOutlet
-]
-,
+  imports: [
+    CommonModule,
+    FormsModule,
+    NavigationBarComponent,
+    LoaderComponent,
+    RouterOutlet
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

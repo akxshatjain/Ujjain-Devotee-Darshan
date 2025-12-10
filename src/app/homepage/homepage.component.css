@@ -1,24 +1,34 @@
-/* Full page with bluish background */
+/* Full page with beautiful blue gradient background */
 .app-container {
   min-height: 100vh;
-  background-color: #d9e0e3; /* light bluish background */
+  background: radial-gradient(ellipse at top, #e0f2fe 0%, #dbeafe 35%, #e0e7ff 100%);
+  background-attachment: fixed;
   display: flex;
-  justify-content: center;   /* center horizontally */
-  align-items: flex-start;   /* start from top */
+  justify-content: center;
+  /* center horizontally */
+  align-items: flex-start;
+  /* start from top */
   flex-direction: column;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   position: relative;
+  overflow-x: hidden;
 }
 
 /* “महाकाल” text styling */
 .mahakal-text {
   font-size: 70px;
-  font-weight: 500;
-  color: #7a5c2e;
+  font-weight: 700;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #1e40af 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   position: absolute;
-  top: 40%;  /* slightly above center */
+  top: 40%;
+  /* slightly above center */
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
   margin: 0;
+  text-shadow: 0 2px 20px rgba(59, 130, 246, 0.3);
+  filter: drop-shadow(0 4px 6px rgba(30, 58, 138, 0.2));
 }
