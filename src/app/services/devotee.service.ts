@@ -11,13 +11,18 @@ import { AuthService } from './auth.service';
 export class DevoteeService {
 
   // ✅ CHANGE URL HERE ONLY
-  private BASE_URL = 'http://10.120.10.245:8890/';
+  private BASE_URL = 'https://mahakaal.inxeoz.com';
 
   private loggedInSubject = new BehaviorSubject<boolean>(false);
   public loggedIn$ = this.loggedInSubject.asObservable();
 
   constructor(private http: HttpClient, private auth: AuthService) {
+    
     this.loggedInSubject.next(this.auth.isLoggedIn());
+    window.addEventListener('auth-status-changed', () => {
+  this.loggedInSubject.next(this.auth.isLoggedIn());
+});
+
   }
 
   /** ---------------- UTIL ---------------- **/

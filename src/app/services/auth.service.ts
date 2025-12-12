@@ -15,6 +15,7 @@ export class AuthService {
   }
 
   login(phone: string, userType: string, token: string): void {
+    
     const cleanToken = token.startsWith('token ')
       ? token.replace('token ', '')
       : token;
@@ -24,6 +25,8 @@ export class AuthService {
     localStorage.setItem('loggedInFlag', 'true');
     localStorage.setItem(this.tokenKey, cleanToken);
     this.loggedIn = true;
+    window.dispatchEvent(new Event('auth-status-changed'));  // ⭐ NEW
+
   }
 
   logout(): void {
@@ -42,7 +45,9 @@ export class AuthService {
     });
 
     // ✅ Navigate back to home
+    window.dispatchEvent(new Event('auth-status-changed'));
     this.router.navigate(['/']);
+
   }
 
   isLoggedIn(): boolean {
